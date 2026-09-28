@@ -6,26 +6,26 @@ const books = [
 
 console.log('Inside the booksrep.js file');
 function getBooks() {
-return books;
+    return books;
 }
 
 function addBook(id,title,author) {
-const book = { "id": id, "title": title, "author": author };
-books.push(book);
+    const book = { "id": id, "title": title, "author": author };
+    books.push(book);
 }
 
 function deleteBook(id) {
-const index = books.findIndex(book => book.id === id);
-if (index !== -1) {
-books.splice(index, 1);
-}
+    const index = books.findIndex(book => book.id === id);
+    if (index !== -1) {
+    books.splice(index, 1);
+    }
 }
 
 function updateBook(id, updatedBook) {
-const index = books.findIndex(book => book.id === id);
-if (index !== -1) {
-books[index] = { ...books[index], ...updatedBook };
-}
+    const index = books.findIndex(book => book.id === id);
+    if (index !== -1) {
+    books[index] = { ...books[index], ...updatedBook };
+    }
 }
 
 module.exports = { getBooks, addBook, deleteBook, updateBook };
