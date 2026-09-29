@@ -3,10 +3,13 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const port = 3000;
+
+
 app.use(express.static(path.join(__dirname)));
 app.use(express.urlencoded({ extended: true }));
+
+
 app.get('/submit-get', (req, res) => {
-    // Data is in req.query for GET requests
     const name = req.query.name;
     const branch = req.query.branch;
     const semester = req.query.semester;
@@ -20,6 +23,8 @@ app.get('/submit-get', (req, res) => {
     `;
     res.send(htmlResponse);
 });
+
+
 app.post('/submit-post', (req, res) => {
     // Data is in req.body for POST requests
     const name = req.body.name;
@@ -32,6 +37,8 @@ app.post('/submit-post', (req, res) => {
         <a href="/">Go Back</a> `;
     res.send(htmlResponse);
 });
+
+
 app.listen(port, () => {
     console.log(`Server is listening at http://localhost:${port}`);
 });
