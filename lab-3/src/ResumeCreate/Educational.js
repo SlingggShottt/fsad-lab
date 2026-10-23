@@ -3,23 +3,31 @@ class EdTable extends React.Component {
     render() {
         const education = [
             {
-                id: 1,      name: "National Public School",           place: "Bengaluru",
-                stddeg: "10th",       grade: "A+",
+                id: 1,      
+                name: "ABC",           
+                place: "Jaipur",
+                degree: "MCA",       
+                grade: "A+",
             },
             {
-                id: 2,       name: "Indian Institute of Science",     place: "Bengaluru",
-       stddeg: "under grade",  grade: "9.8",
+                id: 2,       
+                name: "XYZ",     
+                place: "Bangalore",
+                degree: "Btech",  
+                grade: "O",
             },
         ]
-        const edudetails = education.map(educ => <EdRow key={educ.id} id={educ.id}
-name={educ.name} place={educ.place} stddeg={educ.stddeg} grade={educ.grade} />);
+        const edudetails = education.map(educ => <EdRow id={educ.id}
+name={educ.name} place={educ.place} degree={educ.degree} grade={educ.grade} />);
         return (
             <table>
-                <thead>
-                    <tr>
-                        <th>id</th>   <th>name</th>   <th>place</th>    <th>education</th>   <th>grade</th>
-                    </tr>
-                </thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>place</th>
+                    <th>education</th>
+                    <th>grade</th>
+                </tr>
                 <tbody>
                     {edudetails}
                 </tbody>
@@ -31,8 +39,11 @@ class EdRow extends React.Component {
     render() {
         return (
             <tr>
-                <td>{this.props.id}</td>   <td>{this.props.name}</td>   <td>{this.props.place}</td>
-                <td>{this.props.stddeg}</td>   <td>{this.props.grade}</td>
+                <td>{this.props.id}</td>   
+                <td>{this.props.name}</td>   
+                <td>{this.props.place}</td>
+                <td>{this.props.degree}</td>   
+                <td>{this.props.grade}</td>
             </tr>
         );
     }
