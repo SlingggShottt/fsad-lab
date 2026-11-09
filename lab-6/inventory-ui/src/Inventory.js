@@ -5,7 +5,7 @@ const API = 'http://localhost:8080';
 
 export default function Inventory() {
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({ id: 0, prodname: '', qty: 0, price: 0 });
+  const [form, setForm] = useState({ id: 0, product_name: '', qty: 0, price: 0 });
 
   useEffect(() => {
     axios.get(API).then(r => setItems(r.data));
@@ -28,17 +28,17 @@ export default function Inventory() {
         <tbody>
           {items.map(i => (
             <tr key={i.id}>
-              <td>{i.id}</td><td>{i.prodname}</td><td>{i.qty}</td><td>{i.price}</td>
+              <td>{i.id}</td><td>{i.product_name}</td><td>{i.qty}</td><td>{i.price}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <h2>Add Item</h2>
-      {['id', 'prodname', 'qty', 'price'].map(f => (
+      {['id', 'product_name', 'qty', 'price'].map(f => (
         <div key={f}>
           {f}: <input name={f} value={form[f]} onChange={change}
-                      type={f === 'prodname' ? 'text' : 'number'} />
+                      type={f === 'product_name' ? 'text' : 'number'} />
         </div>
       ))}
       <button onClick={submit}>Submit</button>

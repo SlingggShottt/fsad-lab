@@ -4,10 +4,10 @@ const app = express();
 app.use(cors(), express.json());
 
 const inventory = [
-  { id: 1, prodname: 'prod1', qty: 12, price: 12 },
-  { id: 2, prodname: 'prod2', qty: 1, price: 13 },
-  { id: 3, prodname: 'prod3', qty: 10, price: 14 },
-  { id: 4, prodname: 'prod4', qty: 19, price: 16 },
+  { id: 1, product_name: 'prod1', qty: 12, price: 12 },
+  { id: 2, product_name: 'prod2', qty: 1, price: 13 },
+  { id: 3, product_name: 'prod3', qty: 10, price: 14 },
+  { id: 4, product_name: 'prod4', qty: 19, price: 16 },
 ];
 
 app.get('/', (req, res) => res.json(inventory));
