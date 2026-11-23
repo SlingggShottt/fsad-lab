@@ -40,15 +40,3 @@ db.catalog.aggregate([
   { $match: { $text: { $search: "durable backpack" } } },
   { $project: { _id: 0, name: 1, price: 1, score: { $meta: "textScore" } } }
 ]);
-
-// Step 3b: Shorter version with the same output (find)
-db.catalog.find(
-  { $text: { $search: "durable backpack" } },
-  { _id: 0, name: 1, price: 1, score: { $meta: "textScore" } }
-);
-
-// Step 3c: Same query, guaranteed best match first
-db.catalog.find(
-  { $text: { $search: "durable backpack" } },
-  { _id: 0, name: 1, price: 1, score: { $meta: "textScore" } }
-).sort({ score: { $meta: "textScore" } });

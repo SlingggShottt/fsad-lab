@@ -1,4 +1,4 @@
-const { createServer } = require('http');
+const express = require('express');
 const { createYoga, createSchema } = require('graphql-yoga');
 const employees = require('./db.json').employees;
 
@@ -30,5 +30,5 @@ const schema = createSchema({
   },
 });
 
-createServer(createYoga({ schema })).listen(5000, () =>
-  console.log('GraphQL API live at http://localhost:5000/graphql'));
+express().use('/graphql', createYoga({ schema })).listen(5000, () =>
+  console.log('GraphQL API live at http://localhost:5000/graphql'));s
