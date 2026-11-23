@@ -31,4 +31,4 @@ const schema = createSchema({
 });
 
 express().use('/graphql', createYoga({ schema })).listen(5000, () =>
-  console.log('GraphQL API live at http://localhost:5000/graphql'));s
+  console.log('GraphQL API live at http://localhost:5000/graphql'));

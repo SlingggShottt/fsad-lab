@@ -22,25 +22,38 @@ EOF
 
 # The screen (JSX) is identical in both versions
 ui() { cat <<'EOF'
+  if (form) return (
+    <form onSubmit={save}>
+      <h2>{form.id ? 'Edit Employee' : 'Add Employee'}</h2>
+      {fields.map(([k, label]) => (
+        <input key={k} name={k} placeholder={label} required value={form[k]}
+          onChange={e => setForm({ ...form, [k]: e.target.value })} />
+      ))}
+      <button type="submit">Save</button>
+      <button type="button" onClick={() => setForm(null)}>Cancel</button>
+    </form>
+  );
+
   return (
-    <div>
-      <h1>Employee Management</h1>
-      <form onSubmit={save}>
-        {Object.keys(empty).map(k => (
-          <input key={k} placeholder={k} required value={form[k]}
-            onChange={e => setForm({ ...form, [k]: e.target.value })} />
-        ))}
-        <button>{form.id ? 'Update' : 'Add'}</button>
-      </form>
-      <ul>
-        {list.map(e => (
-          <li key={e.id}>
-            {e.firstName} {e.lastName} ({e.email})
-            <button onClick={() => setForm(e)}>Edit</button>
-            <button onClick={() => remove(e.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <h2>Employees List</h2>
+      <button onClick={() => setForm({ firstName: '', lastName: '', email: '' })}>Add Employee</button>
+      <table>
+        <thead>
+          <tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {list.map(e => (
+            <tr key={e.id}>
+              <td>{e.firstName}</td><td>{e.lastName}</td><td>{e.email}</td>
+              <td>
+                <button onClick={() => setForm(e)}>Edit</button>
+                <button onClick={() => remove(e.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -61,21 +74,22 @@ npm install axios
 cat > src/App.js <<'EOF'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const API = 'http://localhost:5000/employees';
-const empty = { firstName: '', lastName: '', email: '' };
+const fields = [['firstName', 'First Name'], ['lastName', 'Last Name'], ['email', 'Email']];
 const fetchAll = () => axios.get(API).then(r => r.data);
 
 export default function App() {
   const [list, setList] = useState([]);
-  const [form, setForm] = useState(empty);
+  const [form, setForm] = useState(null); // null = show list, object = show form
 
   useEffect(() => { fetchAll().then(setList); }, []);
 
   const save = async e => {
     e.preventDefault();
     await (form.id ? axios.put(`${API}/${form.id}`, form) : axios.post(API, form));
-    setForm(empty);
+    setForm(null);
     setList(await fetchAll());
   };
 
@@ -92,10 +106,10 @@ mkdir -p "$ROOT/graphql-project/gql-api"
 cd "$ROOT/graphql-project/gql-api"
 db > db.json
 npm init -y > /dev/null
-npm install graphql-yoga graphql
+npm install express graphql-yoga graphql
 
 cat > server.js <<'EOF'
-const { createServer } = require('http');
+const express = require('express');
 const { createYoga, createSchema } = require('graphql-yoga');
 const employees = require('./db.json').employees;
 
@@ -127,7 +141,7 @@ const schema = createSchema({
   },
 });
 
-createServer(createYoga({ schema })).listen(5000, () =>
+express().use('/graphql', createYoga({ schema })).listen(5000, () =>
   console.log('GraphQL API live at http://localhost:5000/graphql'));
 EOF
 
@@ -139,16 +153,17 @@ npm install axios
 cat > src/App.js <<'EOF'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const gql = (query, variables) =>
   axios.post('http://localhost:5000/graphql', { query, variables }).then(r => r.data.data);
+const fields = [['firstName', 'First Name'], ['lastName', 'Last Name'], ['email', 'Email']];
 const fetchAll = () =>
   gql('{ employees { id firstName lastName email } }').then(d => d.employees);
-const empty = { firstName: '', lastName: '', email: '' };
 
 export default function App() {
   const [list, setList] = useState([]);
-  const [form, setForm] = useState(empty);
+  const [form, setForm] = useState(null); // null = show list, object = show form
 
   useEffect(() => { fetchAll().then(setList); }, []);
 
@@ -161,7 +176,7 @@ export default function App() {
         : 'mutation($input: EmployeeInput!) { addEmployee(input: $input) { id } }',
       { id, input }
     );
-    setForm(empty);
+    setForm(null);
     setList(await fetchAll());
   };
 

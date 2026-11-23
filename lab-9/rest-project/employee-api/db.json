@@ -1,6 +1,17 @@
 {
   "employees": [
-    { "id": 1, "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com" },
-    { "id": 2, "firstName": "Jane", "lastName": "Smith", "email": "jane.smith@example.com" }
-  ]
+    {
+      "id": "1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com"
+    },
+    {
+      "firstName": "Divyansh",
+      "lastName": "Mishra",
+      "email": "slingggshottt.work@gmail.com",
+      "id": "e3fU-4SrUwo"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
